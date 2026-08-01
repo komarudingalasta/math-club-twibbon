@@ -1,54 +1,58 @@
-// ==========================================
-// MATH CLUB GALASTA 2026
-// SCRIPT.JS
-// Foto tidak gepeng + drag + zoom
-// ==========================================
+/* ==========================================
+   MATH CLUB GALASTA 2026
+   SCRIPT.JS - BAGIAN 1
+========================================== */
 
+// =========================
+// CANVAS
+// =========================
 
 const canvas = document.getElementById("twibbonCanvas");
 const ctx = canvas.getContext("2d");
 
+// =========================
+// KOMPONEN
+// =========================
+
 const upload = document.getElementById("photoUpload");
-const nameInput = document.getElementById("nameInput");
-const classInput = document.getElementById("classInput");
+const studentName = document.getElementById("studentName");
+const studentClass = document.getElementById("studentClass");
+
+const zoomSlider = document.getElementById("zoomSlider");
 
 const downloadBtn = document.getElementById("downloadBtn");
+const resetBtn = document.getElementById("resetBtn");
 
+// =========================
+// FRAME
+// =========================
 
-// =============================
-// UKURAN CANVAS
-// =============================
+const frame = new Image();
+frame.src = "assets/frame.png";
 
-canvas.width = 1080;
-canvas.height = 1080;
+// =========================
+// FOTO SISWA
+// =========================
 
-
-// =============================
-// DATA FOTO
-// =============================
-
-let photo = new Image();
+const photo = new Image();
 
 let photoLoaded = false;
 
-let photoX = canvas.width / 2;
-let photoY = canvas.height / 2;
+// posisi awal
 
-let scale = 1;
+let imgX = 540;
+let imgY = 420;
 
+let imgScale = 1;
 
-// =============================
-// FRAME
-// =============================
+// ukuran dasar
 
-let frame = new Image();
+let baseWidth = 700;
+let baseHeight = 700;
 
-frame.src = "assets/frame.png";
-
-
-// =============================
+// =========================
 // UPLOAD FOTO
-// =============================
+// =========================
 
 upload.addEventListener("change", function(e){
 
@@ -56,9 +60,7 @@ upload.addEventListener("change", function(e){
 
     if(!file) return;
 
-
     const reader = new FileReader();
-
 
     reader.onload = function(event){
 
@@ -66,277 +68,515 @@ upload.addEventListener("change", function(e){
 
             photoLoaded = true;
 
-            scale = 1;
+            imgX = 540;
+            imgY = 420;
+            imgScale = 1;
 
-            photoX = canvas.width/2;
-            photoY = canvas.height/2;
+            zoomSlider.value = 1;
 
-            draw();
+            renderCanvas();
 
         }
-
 
         photo.src = event.target.result;
 
     }
 
-
     reader.readAsDataURL(file);
 
 });
 
+// =========================
+// INPUT NAMA
+// =========================
 
+studentName.addEventListener("input",renderCanvas);
 
-// =============================
-// GAMBAR CANVAS
-// =============================
+// =========================
+// INPUT KELAS
+// =========================
 
-function draw(){
+studentClass.addEventListener("input",renderCanvas);
 
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+// =========================
+// SLIDER
+// =========================
 
+zoomSlider.addEventListener("input",function(){
 
+    imgScale = Number(this.value);
+
+    renderCanvas();
+
+});
+
+// =========================
+// RESET
+// =========================
+
+resetBtn.addEventListener("click",function(){
+
+    imgX = 540;
+    imgY = 420;
+    imgScale = 1;
+
+    zoomSlider.value = 1;
+
+    renderCanvas();
+
+});
+
+// =========================
+// RENDER
+// =========================
+
+function renderCanvas(){
+
+    ctx.clearRect(0,0,1080,1080);
+
+    // background putih
+
+    ctx.fillStyle="#ffffff";
+    ctx.fillRect(0,0,1080,1080);
+
+    // =====================
     // FOTO
+    // =====================
 
     if(photoLoaded){
 
-        ctx.save();
-
-
-        ctx.translate(
-            photoX,
-            photoY
-        );
-
-
-        ctx.scale(
-            scale,
-            scale
-        );
-
-
-        // menjaga rasio asli foto
-
-        let ratio = Math.max(
-            canvas.width / photo.width,
-            canvas.height / photo.height
-        );
-
-
-        let w = photo.width * ratio;
-
-        let h = photo.height * ratio;
-
-
+        const w = baseWidth * imgScale;
+        const h = baseHeight * imgScale;
 
         ctx.drawImage(
+
             photo,
-            -w/2,
-            -h/2,
+
+            imgX - w/2,
+
+            imgY - h/2,
+
             w,
+
             h
+
         );
-
-
-        ctx.restore();
 
     }
 
-
-
-    // FRAME DI ATAS FOTO
+    // =====================
+    // FRAME
+    // =====================
 
     if(frame.complete){
 
-        ctx.drawImage(
-            frame,
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
+        ctx.drawImage(frame,0,0,1080,1080);
 
     }
 
-
-    // TEXT
-
-    ctx.fillStyle="white";
+    // =====================
+    // NAMA
+    // =====================
 
     ctx.textAlign="center";
 
+    ctx.fillStyle="white";
 
-    ctx.font="bold 55px Arial";
+    ctx.strokeStyle="black";
 
-    ctx.fillText(
-        nameInput.value,
-        canvas.width/2,
-        930
+    ctx.lineWidth=8;
+
+    ctx.font="bold 48px Poppins";
+
+    const nama = studentName.value || "";
+
+    ctx.strokeText(
+
+        nama,
+
+        540,
+
+        950
+
     );
 
+    ctx.fillText(
 
-    ctx.font="40px Arial";
+        nama,
+
+        540,
+
+        950
+
+    );
+
+    // =====================
+    // KELAS
+    // =====================
+
+    ctx.font="bold 36px Poppins";
+
+    const kelas = studentClass.value || "";
+
+    ctx.strokeText(
+
+        kelas,
+
+        540,
+
+        1005
+
+    );
 
     ctx.fillText(
-        classInput.value,
-        canvas.width/2,
-        990
+
+        kelas,
+
+        540,
+
+        1005
+
     );
 
 }
 
+// =========================
+// FRAME SIAP
+// =========================
 
+frame.onload = function(){
 
-// =============================
-// INPUT TEXT
-// =============================
+    renderCanvas();
 
-nameInput.addEventListener(
-"input",
-draw
-);
+}
 
+/* ==========================================
+   SCRIPT.JS - BAGIAN 2
+   DRAG, TOUCH, WHEEL, DOWNLOAD
+========================================== */
 
-classInput.addEventListener(
-"input",
-draw
-);
+// ======================================
+// DRAG MOUSE
+// ======================================
 
+let isDragging = false;
+let startX = 0;
+let startY = 0;
 
+canvas.addEventListener("mousedown", (e) => {
 
-// =============================
-// DRAG FOTO
-// =============================
+    isDragging = true;
 
-let dragging=false;
-
-let startX;
-let startY;
-
-
-canvas.addEventListener(
-"pointerdown",
-function(e){
-
-    dragging=true;
-
-    startX=e.clientX-photoX;
-
-    startY=e.clientY-photoY;
-
-    canvas.setPointerCapture(
-        e.pointerId
-    );
+    startX = e.offsetX;
+    startY = e.offsetY;
 
 });
 
+canvas.addEventListener("mousemove", (e) => {
 
+    if (!isDragging) return;
 
-canvas.addEventListener(
-"pointermove",
-function(e){
+    let dx = e.offsetX - startX;
+    let dy = e.offsetY - startY;
 
-    if(!dragging)return;
+    startX = e.offsetX;
+    startY = e.offsetY;
 
+    imgX += dx * (1080 / canvas.clientWidth);
+    imgY += dy * (1080 / canvas.clientHeight);
 
-    photoX=e.clientX-startX;
-
-    photoY=e.clientY-startY;
-
-
-    draw();
-
-});
-
-
-
-canvas.addEventListener(
-"pointerup",
-function(){
-
-    dragging=false;
+    renderCanvas();
 
 });
 
+canvas.addEventListener("mouseup", () => {
 
+    isDragging = false;
 
-// =============================
-// ZOOM DENGAN SCROLL HP/MOUSE
-// =============================
+});
 
-canvas.addEventListener(
-"wheel",
-function(e){
+canvas.addEventListener("mouseleave", () => {
+
+    isDragging = false;
+
+});
+
+// ======================================
+// TOUCH HP
+// ======================================
+
+canvas.addEventListener("touchstart", function(e){
+
+    if(e.touches.length !== 1) return;
+
+    isDragging = true;
+
+    const rect = canvas.getBoundingClientRect();
+
+    startX = e.touches[0].clientX - rect.left;
+    startY = e.touches[0].clientY - rect.top;
+
+});
+
+canvas.addEventListener("touchmove", function(e){
+
+    if(!isDragging) return;
 
     e.preventDefault();
 
+    const rect = canvas.getBoundingClientRect();
+
+    let x = e.touches[0].clientX - rect.left;
+    let y = e.touches[0].clientY - rect.top;
+
+    let dx = x - startX;
+    let dy = y - startY;
+
+    startX = x;
+    startY = y;
+
+    imgX += dx * (1080 / canvas.clientWidth);
+    imgY += dy * (1080 / canvas.clientHeight);
+
+    renderCanvas();
+
+},{passive:false});
+
+canvas.addEventListener("touchend",function(){
+
+    isDragging=false;
+
+});
+
+// ======================================
+// ZOOM DENGAN SCROLL MOUSE
+// ======================================
+
+canvas.addEventListener("wheel",function(e){
+
+    e.preventDefault();
 
     if(e.deltaY<0){
 
-        scale +=0.05;
+        imgScale +=0.05;
 
     }else{
 
-        scale -=0.05;
+        imgScale -=0.05;
 
     }
 
+    imgScale=Math.max(0.5,Math.min(3,imgScale));
 
-    if(scale<0.5)
-        scale=0.5;
+    zoomSlider.value=imgScale;
 
-
-    if(scale>3)
-        scale=3;
-
-
-    draw();
-
-},
-{
-passive:false
-});
-
-
-
-// =============================
-// TOMBOL DOWNLOAD
-// =============================
-
-downloadBtn.addEventListener(
-"click",
-function(){
-
-
-const link=document.createElement("a");
-
-
-link.download=
-"Twibbon-Math-Club-Galasta.png";
-
-
-link.href=
-canvas.toDataURL(
-"image/png"
-);
-
-
-link.click();
-
+    renderCanvas();
 
 });
 
+// ======================================
+// DOWNLOAD PNG HD
+// ======================================
 
+downloadBtn.addEventListener("click",function(){
 
-// gambar awal
+    renderCanvas();
 
-frame.onload=function(){
+    canvas.toBlob(function(blob){
 
-draw();
+        const link=document.createElement("a");
+
+        let nama=studentName.value.trim();
+
+        if(nama===""){
+
+            nama="MathClubGalasta";
+
+        }
+
+        nama=nama.replace(/\s+/g,"_");
+
+        link.download=nama+".png";
+
+        link.href=URL.createObjectURL(blob);
+
+        link.click();
+
+        URL.revokeObjectURL(link.href);
+
+    },"image/png");
+
+});
+
+// ======================================
+// CEGAH DRAG GAMBAR BROWSER
+// ======================================
+
+canvas.onselectstart=()=>false;
+canvas.ondragstart=()=>false;
+
+/* ==========================================
+   SCRIPT.JS - BAGIAN 3 (FINAL)
+   PENYEMPURNAAN
+========================================== */
+
+// ===============================
+// FOTO PROPORSIONAL
+// ===============================
+
+photo.onload = function () {
+
+    photoLoaded = true;
+
+    const rasio = photo.width / photo.height;
+
+    if (rasio > 1) {
+        baseHeight = 800;
+        baseWidth = baseHeight * rasio;
+    } else {
+        baseWidth = 800;
+        baseHeight = baseWidth / rasio;
+    }
+
+    imgScale = 1;
+    imgX = 540;
+    imgY = 420;
+
+    zoomSlider.value = 1;
+
+    renderCanvas();
 
 };
+
+// ===============================
+// BATAS GESER FOTO
+// ===============================
+
+function limitPosition(){
+
+    const w = baseWidth * imgScale;
+    const h = baseHeight * imgScale;
+
+    const minX = 540 - w/2;
+    const maxX = 540 + w/2;
+
+    const minY = 540 - h/2;
+    const maxY = 540 + h/2;
+
+    imgX = Math.min(maxX, Math.max(minX, imgX));
+    imgY = Math.min(maxY, Math.max(minY, imgY));
+
+}
+
+// ===============================
+// PINCH ZOOM HP
+// ===============================
+
+let pinchDistance = 0;
+
+canvas.addEventListener("touchmove",function(e){
+
+    if(e.touches.length!=2) return;
+
+    e.preventDefault();
+
+    const dx =
+        e.touches[0].clientX -
+        e.touches[1].clientX;
+
+    const dy =
+        e.touches[0].clientY -
+        e.touches[1].clientY;
+
+    const distance =
+        Math.sqrt(dx*dx+dy*dy);
+
+    if(pinchDistance!==0){
+
+        if(distance>pinchDistance){
+
+            imgScale+=0.02;
+
+        }else{
+
+            imgScale-=0.02;
+
+        }
+
+        imgScale=Math.max(0.5,Math.min(3,imgScale));
+
+        zoomSlider.value=imgScale;
+
+        renderCanvas();
+
+    }
+
+    pinchDistance=distance;
+
+},{passive:false});
+
+canvas.addEventListener("touchend",function(){
+
+    pinchDistance=0;
+
+});
+
+// ===============================
+// RENDER HALUS
+// ===============================
+
+const oldRender = renderCanvas;
+
+renderCanvas = function(){
+
+    limitPosition();
+
+    requestAnimationFrame(oldRender);
+
+};
+
+// ===============================
+// DOWNLOAD KUALITAS TINGGI
+// ===============================
+
+downloadBtn.addEventListener("click",function(){
+
+    renderCanvas();
+
+    setTimeout(function(){
+
+        canvas.toBlob(function(blob){
+
+            const link=document.createElement("a");
+
+            let nama=studentName.value.trim();
+
+            if(nama===""){
+
+                nama="MathClubGalasta";
+
+            }
+
+            nama=nama.replace(/\s+/g,"_");
+
+            link.download=
+                "MathClubGalasta_"+nama+".png";
+
+            link.href=
+                URL.createObjectURL(blob);
+
+            link.click();
+
+            URL.revokeObjectURL(link.href);
+
+        },"image/png",1);
+
+    },100);
+
+});
+
+// ===============================
+// SELESAI
+// ===============================
+
+console.log("Math Club Galasta Ready");
