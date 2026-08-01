@@ -64,17 +64,31 @@ upload.addEventListener("change", function(e){
 
     reader.onload = function(event){
 
-        photo.onload = function(){
+       
+   photo.onload = function () {
 
-            photoLoaded = true;
+    photoLoaded = true;
 
-            imgX = 540;
-            imgY = 420;
-            imgScale = 1;
+    const maxSize = 900;
+    const ratio = photo.width / photo.height;
 
-            zoomSlider.value = 1;
+    if (ratio > 1) {
+        baseWidth = maxSize;
+        baseHeight = maxSize / ratio;
+    } else {
+        baseHeight = maxSize;
+        baseWidth = maxSize * ratio;
+    }
 
-            renderCanvas();
+    imgX = 540;
+    imgY = 420;
+    imgScale = 1;
+
+    zoomSlider.value = 1;
+
+    renderCanvas();
+
+};
 
         }
 
