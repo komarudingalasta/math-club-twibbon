@@ -55,51 +55,20 @@ let baseHeight = 700;
 // =========================
 
 upload.addEventListener("change", function(e){
+upload.addEventListener("change", function (e) {
 
     const file = e.target.files[0];
-
-    if(!file) return;
+    if (!file) return;
 
     const reader = new FileReader();
 
-    reader.onload = function(event){
-
-       
-   photo.onload = function () {
-
-    photoLoaded = true;
-
-    const maxSize = 900;
-    const ratio = photo.width / photo.height;
-
-    if (ratio > 1) {
-        baseWidth = maxSize;
-        baseHeight = maxSize / ratio;
-    } else {
-        baseHeight = maxSize;
-        baseWidth = maxSize * ratio;
-    }
-
-    imgX = 540;
-    imgY = 420;
-    imgScale = 1;
-
-    zoomSlider.value = 1;
-
-    renderCanvas();
-
-};
-
-        }
-
+    reader.onload = function (event) {
         photo.src = event.target.result;
-
-    }
+    };
 
     reader.readAsDataURL(file);
 
 });
-
 // =========================
 // INPUT NAMA
 // =========================
@@ -442,14 +411,16 @@ photo.onload = function () {
 
     photoLoaded = true;
 
-    const rasio = photo.width / photo.height;
+    const ratio = photo.width / photo.height;
 
-    if (rasio > 1) {
-        baseHeight = 800;
-        baseWidth = baseHeight * rasio;
+    const maxSize = 900;
+
+    if (ratio >= 1) {
+        baseHeight = maxSize;
+        baseWidth = maxSize * ratio;
     } else {
-        baseWidth = 800;
-        baseHeight = baseWidth / rasio;
+        baseWidth = maxSize;
+        baseHeight = maxSize / ratio;
     }
 
     imgScale = 1;
@@ -459,6 +430,8 @@ photo.onload = function () {
     zoomSlider.value = 1;
 
     renderCanvas();
+
+};
 
 };
 
