@@ -1,14 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
-    <title>Math Club Galasta</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Math Club Galasta Twibbon</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
+<div class="container">
+
 <h1>Math Club Galasta</h1>
 
-<p>Website Twibbon</p>
+<p class="tagline">
+Shape a sharp mindset with the math club
+</p>
+
+
+<div class="upload-box">
+
+<label>
+Upload Foto
+</label>
+
+<input 
+type="file" 
+id="uploadFoto"
+accept="image/*">
+
+
+<input 
+type="text"
+id="nama"
+placeholder="Nama Siswa">
+
+
+<input 
+type="text"
+id="kelas"
+placeholder="Contoh: 7A">
+
+
+</div>
+
+
+<div id="hasil">
+
+<img id="fotoSiswa">
+
+<img id="frame" src="assets/frame.png">
+
+<div id="dataSiswa">
+
+<p id="tampilNama"></p>
+<p id="tampilKelas"></p>
+
+</div>
+
+</div>
+
+
+<button onclick="downloadTwibbon()">
+Download Twibbon
+</button>
+
+
+</div>
+
+
+<script src="script.js"></script>
 
 </body>
+
 </html>
