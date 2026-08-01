@@ -2,79 +2,163 @@
 <html lang="id">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Math Club Galasta Twibbon</title>
+    <title>Math Club Galasta 2026</title>
 
-<link rel="stylesheet" href="style.css">
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
 <div class="container">
 
-<h1>Math Club Galasta</h1>
+    <!-- PANEL PREVIEW -->
+    <section class="preview">
 
-<p class="tagline">
-Shape a sharp mindset with the math club
-</p>
+        <div class="canvas-box">
 
+            <canvas
+                id="twibbonCanvas"
+                width="1080"
+                height="1080">
+            </canvas>
 
-<div class="upload-box">
+        </div>
 
-<label>
-Upload Foto
-</label>
-
-<input 
-type="file" 
-id="uploadFoto"
-accept="image/*">
+    </section>
 
 
-<input 
-type="text"
-id="nama"
-placeholder="Nama Siswa">
+
+    <!-- PANEL KONTROL -->
+    <section class="control">
+
+        <div class="card">
+
+            <h1>Math Club Galasta</h1>
+
+            <p class="subtitle">
+                Shape a Sharp Mindset with the Math Club
+            </p>
 
 
-<input 
-type="text"
-id="kelas"
-placeholder="Contoh: 7A">
+            <!-- Upload -->
 
+            <label class="label">
+                Upload Foto
+            </label>
+
+            <input
+                type="file"
+                id="photoUpload"
+                accept="image/*">
+
+
+
+            <!-- Nama -->
+
+            <label class="label">
+                Nama Siswa
+            </label>
+
+            <input
+                type="text"
+                id="studentName"
+                placeholder="Contoh : Ahmad Fauzan">
+
+
+
+            <!-- Kelas -->
+
+            <label class="label">
+                Kelas
+            </label>
+
+            <input
+                type="text"
+                id="studentClass"
+                placeholder="Contoh : 8A">
+
+
+
+            <!-- Zoom -->
+
+            <label class="label">
+                Zoom Foto
+            </label>
+
+            <input
+                type="range"
+                id="zoomSlider"
+                min="0.5"
+                max="3"
+                step="0.01"
+                value="1">
+
+
+
+            <!-- Tombol -->
+
+            <div class="button-group">
+
+                <button id="resetBtn">
+                    Reset Foto
+                </button>
+
+                <button id="downloadBtn">
+                    Download Twibbon
+                </button>
+
+            </div>
+
+
+            <!-- Petunjuk -->
+
+            <div class="info">
+
+                <h3>Petunjuk</h3>
+
+                <ul>
+
+                    <li>Upload foto terbaik.</li>
+
+                    <li>Geser foto dengan jari atau mouse.</li>
+
+                    <li>Perbesar atau perkecil menggunakan slider.</li>
+
+                    <li>Isi nama dan kelas.</li>
+
+                    <li>Tekan Download untuk menyimpan hasil.</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </div>
 
 
-<div id="hasil">
 
-<img id="fotoSiswa">
+<footer>
 
-<img id="frame" src="assets/frame.png">
+    © 2026 Math Club Galasta
 
-<div id="dataSiswa">
-
-<p id="tampilNama"></p>
-<p id="tampilKelas"></p>
-
-</div>
-
-</div>
+</footer>
 
 
-<button onclick="downloadTwibbon()">
-Download Twibbon
-</button>
 
-
-</div>
-
-
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>  
+<!-- Script -->
 
 <script src="script.js"></script>
 
