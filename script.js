@@ -249,3 +249,168 @@ frame.onload = function(){
     renderCanvas();
 
 }
+
+/* ==========================================
+   SCRIPT.JS - BAGIAN 2
+   DRAG, TOUCH, WHEEL, DOWNLOAD
+========================================== */
+
+// ======================================
+// DRAG MOUSE
+// ======================================
+
+let isDragging = false;
+let startX = 0;
+let startY = 0;
+
+canvas.addEventListener("mousedown", (e) => {
+
+    isDragging = true;
+
+    startX = e.offsetX;
+    startY = e.offsetY;
+
+});
+
+canvas.addEventListener("mousemove", (e) => {
+
+    if (!isDragging) return;
+
+    let dx = e.offsetX - startX;
+    let dy = e.offsetY - startY;
+
+    startX = e.offsetX;
+    startY = e.offsetY;
+
+    imgX += dx * (1080 / canvas.clientWidth);
+    imgY += dy * (1080 / canvas.clientHeight);
+
+    renderCanvas();
+
+});
+
+canvas.addEventListener("mouseup", () => {
+
+    isDragging = false;
+
+});
+
+canvas.addEventListener("mouseleave", () => {
+
+    isDragging = false;
+
+});
+
+// ======================================
+// TOUCH HP
+// ======================================
+
+canvas.addEventListener("touchstart", function(e){
+
+    if(e.touches.length !== 1) return;
+
+    isDragging = true;
+
+    const rect = canvas.getBoundingClientRect();
+
+    startX = e.touches[0].clientX - rect.left;
+    startY = e.touches[0].clientY - rect.top;
+
+});
+
+canvas.addEventListener("touchmove", function(e){
+
+    if(!isDragging) return;
+
+    e.preventDefault();
+
+    const rect = canvas.getBoundingClientRect();
+
+    let x = e.touches[0].clientX - rect.left;
+    let y = e.touches[0].clientY - rect.top;
+
+    let dx = x - startX;
+    let dy = y - startY;
+
+    startX = x;
+    startY = y;
+
+    imgX += dx * (1080 / canvas.clientWidth);
+    imgY += dy * (1080 / canvas.clientHeight);
+
+    renderCanvas();
+
+},{passive:false});
+
+canvas.addEventListener("touchend",function(){
+
+    isDragging=false;
+
+});
+
+// ======================================
+// ZOOM DENGAN SCROLL MOUSE
+// ======================================
+
+canvas.addEventListener("wheel",function(e){
+
+    e.preventDefault();
+
+    if(e.deltaY<0){
+
+        imgScale +=0.05;
+
+    }else{
+
+        imgScale -=0.05;
+
+    }
+
+    imgScale=Math.max(0.5,Math.min(3,imgScale));
+
+    zoomSlider.value=imgScale;
+
+    renderCanvas();
+
+});
+
+// ======================================
+// DOWNLOAD PNG HD
+// ======================================
+
+downloadBtn.addEventListener("click",function(){
+
+    renderCanvas();
+
+    canvas.toBlob(function(blob){
+
+        const link=document.createElement("a");
+
+        let nama=studentName.value.trim();
+
+        if(nama===""){
+
+            nama="MathClubGalasta";
+
+        }
+
+        nama=nama.replace(/\s+/g,"_");
+
+        link.download=nama+".png";
+
+        link.href=URL.createObjectURL(blob);
+
+        link.click();
+
+        URL.revokeObjectURL(link.href);
+
+    },"image/png");
+
+});
+
+// ======================================
+// CEGAH DRAG GAMBAR BROWSER
+// ======================================
+
+canvas.onselectstart=()=>false;
+canvas.ondragstart=()=>false;
