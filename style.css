@@ -1,161 +1,393 @@
-*{
-box-sizing:border-box;
-}
+/* ==========================
+   MATH CLUB GALASTA 2026
+   STYLE.CSS
+========================== */
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
 body{
 
-font-family:
-Arial, sans-serif;
+    background:linear-gradient(135deg,#0d1b4d,#17327c,#2648a5);
 
-background:
-linear-gradient(
-135deg,
-#0b1d3a,
-#2563eb
-);
+    min-height:100vh;
 
-min-height:100vh;
+    display:flex;
+    flex-direction:column;
 
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
+    color:#ffffff;
 }
 
+/* ========================== */
 
 .container{
 
-background:white;
+    width:100%;
+    max-width:1400px;
 
-width:95%;
+    margin:auto;
 
-max-width:420px;
+    display:flex;
 
-padding:25px;
+    gap:40px;
 
-border-radius:20px;
+    justify-content:center;
 
-text-align:center;
+    align-items:flex-start;
 
-box-shadow:
-0 10px 30px rgba(0,0,0,.3);
+    padding:40px 20px;
 
 }
 
+/* ========================== */
+/* PREVIEW */
+/* ========================== */
+
+.preview{
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.canvas-box{
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:18px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+
+}
+
+#twibbonCanvas{
+
+    width:100%;
+
+    max-width:600px;
+
+    border-radius:18px;
+
+    background:#f3f6ff;
+
+    cursor:grab;
+
+    display:block;
+
+}
+
+#twibbonCanvas:active{
+
+    cursor:grabbing;
+
+}
+
+/* ========================== */
+/* PANEL */
+/* ========================== */
+
+.control{
+
+    width:380px;
+
+}
+
+.card{
+
+    background:#ffffff;
+
+    color:#222;
+
+    border-radius:25px;
+
+    padding:28px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.30);
+
+    animation:fade .7s;
+
+}
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ========================== */
 
 h1{
 
-color:#123;
+    color:#17327c;
+
+    text-align:center;
+
+    font-size:32px;
+
+    margin-bottom:8px;
 
 }
 
+.subtitle{
 
-.tagline{
+    text-align:center;
 
-font-size:14px;
+    color:#666;
 
-color:#555;
+    margin-bottom:25px;
 
-}
+    font-size:14px;
 
-
-.upload-box input{
-
-width:100%;
-
-padding:10px;
-
-margin:7px 0;
-
-border-radius:10px;
-
-border:1px solid #ccc;
+    line-height:1.5;
 
 }
 
+/* ========================== */
 
+.label{
 
-#hasil{
+    display:block;
 
-position:relative;
+    font-weight:600;
 
-width:100%;
+    margin-top:18px;
 
-aspect-ratio:1/1;
+    margin-bottom:8px;
 
-margin-top:20px;
-
-overflow:hidden;
-
-}
-
-
-#fotoSiswa{
-
-position:absolute;
-
-width:100%;
-
-height:100%;
-
-object-fit:cover;
+    color:#17327c;
 
 }
 
+/* ========================== */
 
+input[type=text]{
 
-#frame{
+    width:100%;
 
-position:absolute;
+    padding:14px;
 
-width:100%;
+    border-radius:12px;
 
-height:100%;
+    border:2px solid #d6dff9;
 
-left:0;
+    font-size:15px;
 
-top:0;
+    outline:none;
 
-}
-
-
-#dataSiswa{
-
-position:absolute;
-
-bottom:30px;
-
-width:100%;
-
-font-weight:bold;
-
-color:white;
-
-text-shadow:
-2px 2px 5px black;
+    transition:.3s;
 
 }
 
+input[type=text]:focus{
+
+    border-color:#2846A6;
+
+}
+
+/* ========================== */
+
+input[type=file]{
+
+    width:100%;
+
+    padding:12px;
+
+    background:#eef3ff;
+
+    border-radius:12px;
+
+    border:2px dashed #2846A6;
+
+}
+
+/* ========================== */
+
+input[type=range]{
+
+    width:100%;
+
+    margin-top:10px;
+
+}
+
+/* ========================== */
+
+.button-group{
+
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:12px;
+
+    margin-top:28px;
+
+}
+
+/* ========================== */
 
 button{
 
-margin-top:20px;
+    border:none;
 
-padding:12px 25px;
+    border-radius:14px;
 
-border:none;
+    padding:15px;
 
-border-radius:20px;
+    font-size:16px;
 
-background:#2563eb;
+    font-weight:700;
 
-color:white;
+    cursor:pointer;
 
-font-size:16px;
+    transition:.25s;
 
-cursor:pointer;
+}
+
+/* ========================== */
+
+#downloadBtn{
+
+    background:#2846A6;
+
+    color:white;
+
+}
+
+#downloadBtn:hover{
+
+    transform:translateY(-3px);
+
+    background:#17327c;
+
+}
+
+/* ========================== */
+
+#resetBtn{
+
+    background:#e9eefc;
+
+    color:#17327c;
+
+}
+
+#resetBtn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/* ========================== */
+
+.info{
+
+    margin-top:28px;
+
+    background:#f5f7ff;
+
+    border-radius:15px;
+
+    padding:18px;
+
+}
+
+.info h3{
+
+    color:#17327c;
+
+    margin-bottom:10px;
+
+}
+
+.info ul{
+
+    padding-left:18px;
+
+}
+
+.info li{
+
+    color:#555;
+
+    margin-bottom:8px;
+
+    line-height:1.5;
+
+    font-size:14px;
+
+}
+
+/* ========================== */
+
+footer{
+
+    text-align:center;
+
+    color:white;
+
+    padding:25px;
+
+    font-size:14px;
+
+}
+
+/* ========================== */
+/* RESPONSIVE */
+/* ========================== */
+
+@media(max-width:980px){
+
+.container{
+
+    flex-direction:column;
+
+    align-items:center;
+
+}
+
+.control{
+
+    width:100%;
+    max-width:600px;
+
+}
+
+#twibbonCanvas{
+
+    max-width:100%;
+
+}
+
+.card{
+
+    margin-bottom:30px;
+
+}
 
 }
