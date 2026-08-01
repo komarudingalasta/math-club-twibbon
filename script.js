@@ -414,3 +414,169 @@ downloadBtn.addEventListener("click",function(){
 
 canvas.onselectstart=()=>false;
 canvas.ondragstart=()=>false;
+
+/* ==========================================
+   SCRIPT.JS - BAGIAN 3 (FINAL)
+   PENYEMPURNAAN
+========================================== */
+
+// ===============================
+// FOTO PROPORSIONAL
+// ===============================
+
+photo.onload = function () {
+
+    photoLoaded = true;
+
+    const rasio = photo.width / photo.height;
+
+    if (rasio > 1) {
+        baseHeight = 800;
+        baseWidth = baseHeight * rasio;
+    } else {
+        baseWidth = 800;
+        baseHeight = baseWidth / rasio;
+    }
+
+    imgScale = 1;
+    imgX = 540;
+    imgY = 420;
+
+    zoomSlider.value = 1;
+
+    renderCanvas();
+
+};
+
+// ===============================
+// BATAS GESER FOTO
+// ===============================
+
+function limitPosition(){
+
+    const w = baseWidth * imgScale;
+    const h = baseHeight * imgScale;
+
+    const minX = 540 - w/2;
+    const maxX = 540 + w/2;
+
+    const minY = 540 - h/2;
+    const maxY = 540 + h/2;
+
+    imgX = Math.min(maxX, Math.max(minX, imgX));
+    imgY = Math.min(maxY, Math.max(minY, imgY));
+
+}
+
+// ===============================
+// PINCH ZOOM HP
+// ===============================
+
+let pinchDistance = 0;
+
+canvas.addEventListener("touchmove",function(e){
+
+    if(e.touches.length!=2) return;
+
+    e.preventDefault();
+
+    const dx =
+        e.touches[0].clientX -
+        e.touches[1].clientX;
+
+    const dy =
+        e.touches[0].clientY -
+        e.touches[1].clientY;
+
+    const distance =
+        Math.sqrt(dx*dx+dy*dy);
+
+    if(pinchDistance!==0){
+
+        if(distance>pinchDistance){
+
+            imgScale+=0.02;
+
+        }else{
+
+            imgScale-=0.02;
+
+        }
+
+        imgScale=Math.max(0.5,Math.min(3,imgScale));
+
+        zoomSlider.value=imgScale;
+
+        renderCanvas();
+
+    }
+
+    pinchDistance=distance;
+
+},{passive:false});
+
+canvas.addEventListener("touchend",function(){
+
+    pinchDistance=0;
+
+});
+
+// ===============================
+// RENDER HALUS
+// ===============================
+
+const oldRender = renderCanvas;
+
+renderCanvas = function(){
+
+    limitPosition();
+
+    requestAnimationFrame(oldRender);
+
+};
+
+// ===============================
+// DOWNLOAD KUALITAS TINGGI
+// ===============================
+
+downloadBtn.addEventListener("click",function(){
+
+    renderCanvas();
+
+    setTimeout(function(){
+
+        canvas.toBlob(function(blob){
+
+            const link=document.createElement("a");
+
+            let nama=studentName.value.trim();
+
+            if(nama===""){
+
+                nama="MathClubGalasta";
+
+            }
+
+            nama=nama.replace(/\s+/g,"_");
+
+            link.download=
+                "MathClubGalasta_"+nama+".png";
+
+            link.href=
+                URL.createObjectURL(blob);
+
+            link.click();
+
+            URL.revokeObjectURL(link.href);
+
+        },"image/png",1);
+
+    },100);
+
+});
+
+// ===============================
+// SELESAI
+// ===============================
+
+console.log("Math Club Galasta Ready");
